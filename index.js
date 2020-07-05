@@ -1,5 +1,6 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
+const Manager = require("./lib/Manager");
 
 function checkIfAnother() {
     inquirer
@@ -27,7 +28,10 @@ function init() {
     ===========================
     `);
 
-
+    const manager = new Manager();
+    manager.initManager()
+    this.employees.push(manager)
+    console.log(employees);
 };
 
 
