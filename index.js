@@ -4,7 +4,8 @@ const Manager = require("./lib/Manager");
 const Employee = require("./lib/Employee");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
-
+const generatePage = require("./src/generatePage")
+let employees = []
 
 //recursively calls checkIfAnother
 function addEmployees() {
@@ -18,11 +19,10 @@ function addEmployees() {
                             message: 'Which type of employee do you need to add?',
                             choices: ["Engineer", "Intern"]
                         }).then(answer => {
-                            console.log(answer)
                             if (answer.whichEmployee === 'Engineer') {
                                 const engineer = new Engineer();
                                 engineer.initEngineer().then(() => {
-                                    this.employees.push(engineer)
+                                    employees.push(engineer)
                                     addEmployees().then(() => {
                                         resolve();
                                     })
@@ -30,7 +30,7 @@ function addEmployees() {
                             } else {
                                 const intern = new Intern();
                                 intern.initIntern().then(() => {
-                                    this.employees.push(intern)
+                                    employees.push(intern)
                                     addEmployees().then(() => {
                                         resolve();
                                     })
@@ -57,11 +57,24 @@ function checkIfAnother() {
         })
 }
 
-
+// function to write README file
+function writeToFile(fileName, markdown) {
+    fs.writeFile(fileName, markdown, err => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(`
+            ===========================
+            Successfully wrote File!
+            ===========================
+            `)
+        }
+    });
+}
 
 // function to initialize program
 function init() {
-    this.employees = []
+    
 
     console.log(`
     ===========================
@@ -72,10 +85,14 @@ function init() {
     const manager = new Manager();
     manager.initManager().then(() => {
         // pushes manager data back to employees array
-        this.employees.push(manager)
+        employees.push(manager)
         // adds more employees
         addEmployees().then(() => {
-            console.log(this.employees);
+            console.log(employees);
+            //write file
+            let generated = generatePage(employees)
+            let filename ='./dist/index.html'
+            writeToFile(filename, generated)
         })
     })
 };
