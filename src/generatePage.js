@@ -1,11 +1,24 @@
-generatePage = (data) => {
+generateEmployee = (employee) => {
+    let icon = ''
+    if(employee.role === 'Manager'){icon= `<i class="fas fa-coffee"></i>`}
+    if(employee.role === 'Engineer'){icon= `<i class="fas fa-glasses"></i>`}
+    if(employee.role === 'Intern'){icon= `<i class="fas fa-graduation-cap"></i>`}
 
-    const {
+    return `                <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+ <div class="card-header">${employee.name}</div>
+ <div class="card-body">
+     <h5 class="card-title">${employee.role} ${icon}</h5>
+     <p class="card-text">ID: ${employee.id}</p>
+     <p class="card-text">Email: <a href="mailto:${employee.email}" class= "text-white">${employee.email}</a> </p> 
+     ${(employee.officeNumber ? `<p class="card-text">Office Number: ${employee.officeNumber} </p>` : '')}
+     ${(employee.github ? `<p class="card-text">Github: <a href="https://github.com/${employee.github}" target="_blank" class= "text-white">${employee.github}</a></p>` : '')} 
+     ${(employee.school ? `<p class="card-text">School: ${employee.school} </p>` : '')}
+ </div>
+</div>`
+}
 
-    } = data
-
-    return `
-    <!DOCTYPE html>
+generatePage = (employees) => {
+    let template = `<!DOCTYPE html>
     <html lang="en">
     
     <head>
@@ -25,35 +38,22 @@ generatePage = (data) => {
         </div>
     
         <div class="container">
-            <div class="row">
-                <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-                    <div class="card-header">Header</div>
-                    <div class="card-body">
-                        <h5 class="card-title">Primary card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                            card's
-                            content.</p>
-                    </div>
-                </div>
-    
-                <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-                    <div class="card-header">Header</div>
-                    <div class="card-body">
-                        <h5 class="card-title">Primary card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                            card's
-                            content.</p>
-                    </div>
-                </div>
-                
-            </div>    
+            <div class="row">`
+
+    employees.forEach(employee => {
+        template += generateEmployee(employee);
+    });
+
+
+    template += `            </div>    
         </div>
     
-    
+    <script src="https://kit.fontawesome.com/86733057e3.js" crossorigin="anonymous"></script>
     </body>
     
     </html>
 `;
+    return template
 }
 
 module.exports = generatePage;

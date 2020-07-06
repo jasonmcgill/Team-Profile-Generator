@@ -88,7 +88,6 @@ function init() {
         employees.push(manager)
         // adds more employees
         addEmployees().then(() => {
-            console.log(employees);
             //write file
             let generated = generatePage(employees)
             let filename ='./dist/index.html'
