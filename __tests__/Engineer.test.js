@@ -1,12 +1,25 @@
-const Employee = require('../lib/Employee');
-const Engineer = require('../lib/Intern');
+const Engineer = require('../lib/Engineer');
+const inquirer = require("inquirer");
+
+jest.mock('inquirer')
+
+let answers = {
+    email: 'some@example.com',
+    name: 'Jason',
+    id: 45646,
+    gitHub: 'U'
+}
 
 test('creates employee object', () => {
-    const Engineer = new Employee();
+    const engineer = new Engineer();
 
-    expect(Engineer.name).toBe(expect.any(String));
-    expect(Engineer.id).toBe(expect.any(Number));
-    expect(Engineer.email).toBe(expect.any(String));
-    expect(Engineer.role).toBe(expect.any(String));
-    expect(Engineer.school).toBe(expect.any(String))
+    inquirer.prompt = jest.fn().mockResolvedValue(answers);
+
+    return engineer.initEngineer().then(() => {
+        expect(engineer.name).toBe(answers.name);
+        expect(engineer.id).toBe(answers.id);
+        expect(engineer.email).toBe(answers.email);
+        expect(engineer.role).toBe('Employee');
+        expect(engineer.github).toBe(answers.gitHub);
+    })
 })

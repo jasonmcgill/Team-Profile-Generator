@@ -1,12 +1,26 @@
-const Employee = require('../lib/Employee');
 const Manager = require('../lib/Manager');
+const inquirer = require("inquirer");
+
+jest.mock('inquirer')
+
+let answers = {
+    email: 'some@example.com',
+    name: 'Jason',
+    id: 45646,
+    officeNumber: 801-867-5309
+}
 
 test('creates employee object', () => {
-    const Manager = new Employee();
+    const manager = new Manager();
 
-    expect(Manager.name).toBe(expect.any(String));
-    expect(Manager.id).toBe(expect.any(Number));
-    expect(Manager.email).toBe(expect.any(String));
-    expect(Manager.role).toBe(expect.any(String));
-    expect(Manager.officeNumber).toBe(expect.any(Number))
+    inquirer.prompt = jest.fn().mockResolvedValue(answers);
+
+    return manager.initManager().then(() => {
+
+        expect(manager.name).toBe(answers.name);
+        expect(manager.id).toBe(answers.id);
+        expect(manager.email).toBe(answers.email);
+        expect(manager.role).toBe('Manager');
+        expect(manager.officeNumber).toBe(answers.phone)
+    })
 })
