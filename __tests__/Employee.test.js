@@ -3,6 +3,7 @@ const inquirer = require("inquirer");
 
 jest.mock('inquirer')
 
+//answers to help mock
 let answers = {
     email: 'some@example.com',
     name: 'Jason',
@@ -12,7 +13,7 @@ let answers = {
 
 test('creates employee object', () => {
     const employee = new Employee();
-
+    //gets the value from the answers object above
     inquirer.prompt = jest.fn().mockResolvedValue(answers);
 
     return employee.initEmployee().then(() => { 

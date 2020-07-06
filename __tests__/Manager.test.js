@@ -2,7 +2,7 @@ const Manager = require('../lib/Manager');
 const inquirer = require("inquirer");
 
 jest.mock('inquirer')
-
+//answers to help mock
 let answers = {
     email: 'some@example.com',
     name: 'Jason',
@@ -12,7 +12,7 @@ let answers = {
 
 test('creates employee object', () => {
     const manager = new Manager();
-
+ //gets the value from the answers object above
     inquirer.prompt = jest.fn().mockResolvedValue(answers);
 
     return manager.initManager().then(() => {
